@@ -20,4 +20,5 @@ variable "private_subnet_cidr" {
 
 variable "public_ip" {
   description = "Public IP address for SSH access"
+  default = "115.78.131.128/32"
 }
