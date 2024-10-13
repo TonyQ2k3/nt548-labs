@@ -1,3 +1,4 @@
+# Dynamic values for the Terraform configuration
 variable "vpc_name" {
   description = "VPC Name"
   default     = "21520421-vpc"
@@ -20,5 +21,5 @@ variable "private_subnet_cidr" {
 
 variable "public_ip" {
   description = "Public IP address for SSH access"
-  default = "115.78.131.128/32"
+  default = "14.186.95.103/32"
 }
