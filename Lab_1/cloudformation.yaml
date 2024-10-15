@@ -64,7 +64,7 @@ Resources:
 
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
-    DependsOn: 
+    DependsOn:
       - MainVPC
       - InternetGateway
     Properties:
@@ -83,12 +83,12 @@ Resources:
         - IpProtocol: '-1'
           FromPort: 0
           ToPort: 65535
-          CidrIp: '0.0.0.0/0'
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: '-1'
           FromPort: 0
           ToPort: 65535
-          CidrIp: '0.0.0.0/0'
+          CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
           Value: DefaultSecurityGroup
@@ -101,7 +101,7 @@ Resources:
   # NAT Gateway
   NATGateway:
     Type: AWS::EC2::NatGateway
-    DependsOn: 
+    DependsOn:
       - NATGatewayEIP
       - PublicSubnet
     Properties:
@@ -112,7 +112,7 @@ Resources:
   # Public Route Table
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
-    DependsOn: 
+    DependsOn:
       - MainVPC
       - PublicSubnet
       - InternetGateway
@@ -126,7 +126,7 @@ Resources:
   # Định tuyến traffic từ public subnet ra internet gateway
   PublicRoute:
     Type: AWS::EC2::Route
-    DependsOn: 
+    DependsOn:
       - PublicRouteTable
       - InternetGateway
     Properties:
@@ -138,7 +138,7 @@ Resources:
   # Liên kết subnet với route table
   PublicSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn: 
+    DependsOn:
       - PublicSubnet
       - PublicRouteTable
     Properties:
@@ -149,7 +149,7 @@ Resources:
   # Private Route Table
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
-    DependsOn: 
+    DependsOn:
       - MainVPC
       - PrivateSubnet
       - NATGateway
@@ -163,7 +163,7 @@ Resources:
   # Định tuyến traffic từ private subnet ra NAT Gateway
   PrivateRoute:
     Type: AWS::EC2::Route
-    DependsOn: 
+    DependsOn:
       - PrivateRouteTable
       - NATGateway
     Properties:
@@ -174,7 +174,7 @@ Resources:
 
   PrivateSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
-    DependsOn: 
+    DependsOn:
       - PrivateSubnet
       - PrivateRouteTable
     Properties:
@@ -204,7 +204,7 @@ Resources:
   # Security Group cho Private EC2
   PrivateEC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    DependsOn: 
+    DependsOn:
       - MainVPC
       - PublicEC2SecurityGroup
     Properties:
@@ -219,7 +219,7 @@ Resources:
           FromPort: 23
           ToPort: 23
           SourceSecurityGroupId: !Ref PublicEC2SecurityGroup
-          
+
       SecurityGroupEgress:
         - IpProtocol: '-1'
           FromPort: 0
@@ -239,12 +239,16 @@ Resources:
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds:
         - !Ref PublicEC2SecurityGroup
+      KeyName: privateinstance
+      Tags:
+        - Key: Name
+          Value: PublicEC2Instance
     DeletionPolicy: Delete
 
   # Private EC2 Instance
   PrivateEC2Instance:
     Type: AWS::EC2::Instance
-    DependsOn: 
+    DependsOn:
       - PrivateSubnet
       - PrivateEC2SecurityGroup
     Properties:
@@ -253,6 +257,10 @@ Resources:
       SubnetId: !Ref PrivateSubnet
       SecurityGroupIds:
         - !Ref PrivateEC2SecurityGroup
+      KeyName: privateinstance
+      Tags:
+        - Key: Name
+          Value: PrivateEC2Instance
     DeletionPolicy: Delete
 
 Outputs:

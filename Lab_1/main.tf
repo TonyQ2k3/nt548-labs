@@ -203,10 +203,10 @@ resource "aws_instance" "public_instance" {
   depends_on = [ aws_security_group.public_ec2_sg, aws_subnet.public ]
   ami           = "ami-0e86e20dae9224db8"
   instance_type = "t2.micro"
-  key_name = "privateinstance"
+  key_name = "public-ec2-key"
   
   subnet_id     = aws_subnet.public.id
-  vpc_security_group_ids = [aws_security_group.default.id]
+  vpc_security_group_ids = [aws_security_group.public_ec2_sg.id]
 
   tags = {
     Name = "${var.vpc_name}-public-instance"
@@ -217,12 +217,11 @@ resource "aws_instance" "private_instance" {
   depends_on = [ aws_security_group.private_ec2_sg, aws_subnet.public ]
   ami           = "ami-0e86e20dae9224db8"
   instance_type = "t2.micro"
-  key_name = "privateinstance"
+  key_name = "private-ec2-key"
   
   subnet_id     = aws_subnet.private.id
   vpc_security_group_ids = [ aws_security_group.private_ec2_sg.id ]
   
-
   tags = {
     Name = "${var.vpc_name}-private-instance"
   }
