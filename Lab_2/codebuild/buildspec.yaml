@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       python: 3.x
     commands:
-      - pip i nstall --upgrade pip
+      - pip install --upgrade pip
       - pip install cfn-lint
   build:
     commands:
