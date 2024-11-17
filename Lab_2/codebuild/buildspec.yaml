@@ -7,6 +7,6 @@ phases:
     commands:
       - pip i nstall --upgrade pip
       - pip install cfn-lint
-  check-cloudformation:
+  build:
     commands:
       - cfn-lint Lab_1/cloudformation.yaml
