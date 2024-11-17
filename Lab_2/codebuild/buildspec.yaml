@@ -5,7 +5,8 @@ phases:
     runtime-versions:
       python: 3.x
     commands:
+      - pip i nstall --upgrade pip
       - pip install cfn-lint
-  build:
+  check-cloudformation:
     commands:
-      - cfn-lint cloudformation.yaml
+      - cfn-lint Lab_1/cloudformation.yaml
