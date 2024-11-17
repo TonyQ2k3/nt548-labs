@@ -9,4 +9,4 @@ phases:
       - pip install cfn-lint
   build:
     commands:
-      - cfn-lint Lab_1/cloudformation.yaml
+      - cfn-lint Lab_2/cloudformation.yaml
